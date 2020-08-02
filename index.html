@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>until BD cake</title>
+    <title>time until</title>
     <link rel="stylesheet" href="css/index.css" />
   </head>
   <body>
@@ -34,8 +34,19 @@
       <img src="img/loading.gif" alt="loading" id="loading" class="loading" />
     </main>
     <footer>
-      <select if="voices"></select>
-      <button class="btn" if="read">let me hear</button>
+      <fieldset>
+        <label
+          >chosen date
+          <input
+            id="date"
+            class="date"
+            type="date"
+            max="2035-01-01"
+            min="1899-01-01"
+        /></label>
+      </fieldset>
+      <!--<select id="voices"></select>
+      <button class="btn" if="read">let me hear</button>-->
     </footer>
     <script src="js/index.js"></script>
   </body>

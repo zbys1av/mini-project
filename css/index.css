@@ -30,6 +30,11 @@ main {
   overflow: hidden;
 }
 
+.date input {
+  color: #fff;
+  background-color: transparent;
+}
+
 body::after {
   content: "";
   position: absolute;
