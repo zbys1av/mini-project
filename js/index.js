@@ -2,17 +2,23 @@ const days = document.getElementById("days");
 const hours = document.getElementById("hours");
 const minutes = document.getElementById("minutes");
 const seconds = document.getElementById("seconds");
+const chosenDay = document.querySelector("#chosenDay");
+const chosenMonth = document.querySelector("#chosenMonth");
+const chosenYear = document.querySelector("#chosenYear");
 const countdown = document.getElementById("countdown");
 const year = document.getElementById("year");
 const loading = document.getElementById("loading");
+const textarea = document.getElementById("#text");
 const main = document.querySelector("main");
 const voicesSelect = document.getElementById("voices");
-const readBtn = document.getElementById("btn");
-const text = hours.value + "hours";
+const readBtn = document.getElementById("read");
+const fullTime = "";
 
 //TIMER
 const currentYear = new Date().getFullYear();
-let selectedDate = new Date(`Sep 1 ${currentYear} 00:00:00`);
+let selectedDate = new Date(
+  `${chosenMonth.value} ${chosenDay.value} ${chosenYear.value} 00:00:00`
+);
 
 //update time
 function updateCountdown() {
@@ -44,50 +50,83 @@ setTimeout(() => {
 // run every second
 setInterval(updateCountdown, 1000);
 
-// //SPEAKER
-// function createBox(item) {
-//   const box = document.createAttribute("div");
+// Init speech synth
+const message = new SpeechSynthesisUtterance(); //contains the content the speech service should read and information about how to read it (e.g. language, pitch and volume.)
 
-//   box.addEventListener("click", () => {
-//     setTextMessage(text);
-//     speakText();
-//   });
-// }
+// Store voices
+let voices = [];
 
-// const message = new SpeechSynthesisUtterance();
+function getVoices() {
+  voices = speechSynthesis.getVoices(); //gets all available voices on device
 
-// let voices = [];
+  voices.forEach((voice) => {
+    const option = document.createElement("option"); //creates the HTML element specified by tagName
 
-// function getVoices() {
-//   voice = speechSynthesis.getVoices();
-// }
+    option.value = voice.name;
+    option.innerText = `${voice.name} ${voice.lang}`; //to make list of languages
 
-// voices.forEach((voice) => {
-//   const option = document.createElement("option");
+    voicesSelect.appendChild(option); //to make list of languages, moves it from its current position to the new position
+  });
+}
 
-//   option.value = voice.name;
-//   option.innerText = `${voice.name} ${voice.lang}`;
+text.value += timeForText();
 
-//   voicesSelect.appendChild(option);
-// });
+function timeForText() {
+  const currentTime = new Date();
+  let diff = selectedDate - currentTime;
+  if (diff < 0) {
+    selectedDate = new Date(`August 1 ${currentYear + 1} 00:00:00`);
+    diff = selectedDate - currentTime;
+  }
 
-// function setTextMessage(text) {
-//   message.text = text;
-// }
+  const d = Math.floor(diff / 1000 / 60 / 60 / 24);
+  const h = Math.floor(diff / 1000 / 60 / 60) % 24;
+  const m = Math.floor(diff / 1000 / 60) % 60;
+  const s = Math.floor(diff / 1000) % 60;
 
-// function speakText() {
-//   speechSynthesis.speak(message);
-// }
+  // add values to dom
+  days.innerHTML = d;
+  hours.innerHTML = h < 10 ? "0" + h : h;
+  minutes.innerHTML = m < 10 ? "0" + m : m;
+  seconds.innerHTML = s < 10 ? "0" + s : s;
 
-// function setVoice() {
-//   message.voice = voices.find((voice) => voice.name === e.target.value);
-// }
+  let fullTime =
+    " " + d + " days " + h + " hours " + m + " minutes " + s + " seconds ";
+  return fullTime;
+}
 
-// speechSynthesis.addEventListener("voiceschanged", getVoices);
+// Set text
+function setTextMessage(text) {
+  message.text = text;
+}
 
-// voicesSelect.addEventListener("change", setVoice);
+// Speak text
+function speakText() {
+  speechSynthesis.speak(message); //makes a queue of messages
+}
 
-// readBtn.addEventListener("click", () => {
-//   setTextMessage("suck");
-//   speakText();
-// });
+// Set voice
+function setVoice(e) {
+  message.voice = voices.find((voice) => voice.name === e.target.value); //set the matching voice object to be the value of the SpeechSynthesisUtterance.voice property
+}
+
+// Voices changed
+speechSynthesis.addEventListener("voiceschanged", getVoices); // adding a function or an object that implements EventListener to the list of event listeners
+
+// Toggle text box
+//classList is a read-only property that returns a live DOMTokenList collection of the class attributes of the element. This can then be used to manipulate the class list
+// toggleBtn.addEventListener("click", () =>
+//   //for button
+//   document.getElementById("text-box").classList.toggle("show")
+// );
+
+// Change voice
+voicesSelect.addEventListener("change", setVoice); //changes voice by using setVoice function
+
+// Read text button
+readBtn.addEventListener("click", () => {
+  setTextMessage(text.value);
+  speakText();
+});
+
+getVoices();
