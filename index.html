@@ -3,12 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>time until</title>
+    <title>TIME UNTIL</title>
     <link rel="stylesheet" href="css/index.css" />
+    <link rel="icon" href="img/sand-clock-icon.png" />
   </head>
   <body>
+    <nav id="navbar">
+      <ul>
+        <li><a type="submit" id="home">Home</a></li>
+        <li><a href="#">about me</a></li>
+        <li><a href="#">leave review</a></li>
+        <li><a href="#">contacts</a></li>
+      </ul>
+    </nav>
     <header>
-      <a href="#" class="navMenu">•</a>
+      <button type="submit" id="toggle" class="toggle">
+        <i class="fa fa-bars fa-2x"></i>
+      </button>
     </header>
     <main>
       <div id="year" class="year"></div>
@@ -34,7 +45,7 @@
       <img src="img/loading.gif" alt="loading" id="loading" class="loading" />
     </main>
     <footer>
-      <fieldset class="dateMenu">
+      <section class="dateMenu">
         <label
           >chosen date
           <input
@@ -68,10 +79,12 @@
             readonly
           />
         </label>
-      </fieldset>
-      <textarea id="text" class="text" placeholder="text">time left:</textarea>
-      <select id="voices"></select>
-      <button class="btn" id="read">let me hear</button>
+        <textarea id="text" class="text" placeholder="text">
+time left:</textarea
+        >
+        <select id="voices"></select>
+        <button class="btn" id="read">let me hear</button>
+      </section>
     </footer>
     <script src="js/index.js"></script>
   </body>

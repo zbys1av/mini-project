@@ -12,7 +12,36 @@ const textarea = document.getElementById("#text");
 const main = document.querySelector("main");
 const voicesSelect = document.getElementById("voices");
 const readBtn = document.getElementById("read");
+const toggle = document.getElementById("toggle");
+const home = document.getElementById("home");
+const navbar = document.getElementById("navbar");
 const fullTime = "";
+
+//SIDE BAR
+function closeNavbar(e) {
+  if (
+    document.body.classList.contains("show-nav") &&
+    e.target !== toggle &&
+    !toggle.contains(e.target) &&
+    e.target !== navbar &&
+    !navbar.contains(e.target)
+  ) {
+    document.body.classList.toggle("show-nav");
+    document.body.removeEventListener("click", closeNavbar);
+  } else if (!document.body.classList.contains("show-nav")) {
+    document.body.removeEventListener("click", closeNavbar);
+  }
+}
+
+toggle.addEventListener("click", () => {
+  document.body.classList.toggle("show-nav");
+  document.body.addEventListener("click", closeNavbar);
+});
+
+home.addEventListener("click", () => {
+  document.body.classList.toggle("show-nav");
+  document.body.addEventListener("click", closeNavbar);
+});
 
 //TIMER
 const currentYear = new Date().getFullYear();
@@ -50,6 +79,7 @@ setTimeout(() => {
 // run every second
 setInterval(updateCountdown, 1000);
 
+//SPEECH
 // Init speech synth
 const message = new SpeechSynthesisUtterance(); //contains the content the speech service should read and information about how to read it (e.g. language, pitch and volume.)
 
@@ -90,9 +120,7 @@ function timeForText() {
   minutes.innerHTML = m < 10 ? "0" + m : m;
   seconds.innerHTML = s < 10 ? "0" + s : s;
 
-  let fullTime =
-    " " + d + " days " + h + " hours " + m + " minutes " + s + " seconds ";
-  return fullTime;
+  return " " + d + " days " + h + " hours " + m + " minutes " + s + " seconds ";
 }
 
 // Set text
