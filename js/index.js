@@ -70,7 +70,7 @@ function updateCountdown() {
   seconds.innerHTML = s < 10 ? "0" + s : s;
 }
 
-// show spinner before countdown                                // ?????
+// show spinner before countdown
 setTimeout(() => {
   loading.remove();
   countdown.style.display = "flex";
@@ -81,21 +81,21 @@ setInterval(updateCountdown, 1000);
 
 //SPEECH
 // Init speech synth
-const message = new SpeechSynthesisUtterance(); //contains the content the speech service should read and information about how to read it (e.g. language, pitch and volume.)
+const message = new SpeechSynthesisUtterance();
 
 // Store voices
 let voices = [];
 
 function getVoices() {
-  voices = speechSynthesis.getVoices(); //gets all available voices on device
+  voices = speechSynthesis.getVoices();
 
   voices.forEach((voice) => {
-    const option = document.createElement("option"); //creates the HTML element specified by tagName
+    const option = document.createElement("option");
 
     option.value = voice.name;
-    option.innerText = `${voice.name} ${voice.lang}`; //to make list of languages
+    option.innerText = `${voice.name} ${voice.lang}`;
 
-    voicesSelect.appendChild(option); //to make list of languages, moves it from its current position to the new position
+    voicesSelect.appendChild(option);
   });
 }
 
@@ -130,26 +130,19 @@ function setTextMessage(text) {
 
 // Speak text
 function speakText() {
-  speechSynthesis.speak(message); //makes a queue of messages
+  speechSynthesis.speak(message);
 }
 
 // Set voice
 function setVoice(e) {
-  message.voice = voices.find((voice) => voice.name === e.target.value); //set the matching voice object to be the value of the SpeechSynthesisUtterance.voice property
+  message.voice = voices.find((voice) => voice.name === e.target.value);
 }
 
 // Voices changed
-speechSynthesis.addEventListener("voiceschanged", getVoices); // adding a function or an object that implements EventListener to the list of event listeners
-
-// Toggle text box
-//classList is a read-only property that returns a live DOMTokenList collection of the class attributes of the element. This can then be used to manipulate the class list
-// toggleBtn.addEventListener("click", () =>
-//   //for button
-//   document.getElementById("text-box").classList.toggle("show")
-// );
+speechSynthesis.addEventListener("voiceschanged", getVoices);
 
 // Change voice
-voicesSelect.addEventListener("change", setVoice); //changes voice by using setVoice function
+voicesSelect.addEventListener("change", setVoice);
 
 // Read text button
 readBtn.addEventListener("click", () => {
